@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<query nameid="ConsultarAsociado" definition="I">
+		<hana>SELECT * FROM OHEM WHERE '{0}' = '{1}'</hana>
+	</query>
+</root>

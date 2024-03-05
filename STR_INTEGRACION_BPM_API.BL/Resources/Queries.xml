@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <root>
 	<query nameid="ConsultarAsociado" definition="I">
-		<hana>SELECT * FROM OHEM WHERE '{0}' = '{1}'</hana>
+		<hana>SELECT * FROM OCRD WHERE "{0}" = '{1}'</hana>
+	</query>
+	<query nameid="ConsultarDatosMembresia" definition="I">
+		<hana>SELECT * FROM "@STR_ASC_FAMILIAR" WHERE "U_NROCARNET" = '{0}'</hana>
 	</query>
 </root>

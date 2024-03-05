@@ -51,7 +51,7 @@ namespace STR_INTEGRACION_BPM_API.SL
             catch { throw; }
         }
 
-        public IRestResponse httpGET(string uri, string sessionId)          // Traer ITEM
+        public IRestResponse httpGET(string uri, string sessionId)          // Traer OCRD
         {
             try
             {

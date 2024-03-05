@@ -14,7 +14,7 @@ namespace STR_INTEGRACION_BPM_API.SQ
 
         public HanaConnection GetConnection()
         {
-            hanaConnection = new HanaConnection(ConfigurationManager.ConnectionStrings["hanaRegatas"].ConnectionString);
+            hanaConnection = new HanaConnection(ConfigurationManager.ConnectionStrings["hanaRamo"].ConnectionString);
             return hanaConnection;
         }
 

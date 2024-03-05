@@ -66,7 +66,12 @@
     <Compile Include="ISBODAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\STR_INTEGRACION_BPM_API.EL\STR_INTEGRACION_BPM_API.EL.csproj">
+      <Project>{c02c96cf-d7a4-41e3-83ef-bda0a3a29c40}</Project>
+      <Name>STR_INTEGRACION_BPM_API.EL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

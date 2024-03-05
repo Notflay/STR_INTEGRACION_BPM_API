@@ -1,7 +1,9 @@
 ﻿using Sap.Data.Hana;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,6 +51,30 @@ namespace STR_INTEGRACION_BPM_API.SQ
                     hcm.CloseConnection();
             }
 
+        }
+
+        public DataTable GetDataTableQry(string qry, params string[] prms)
+        {
+            HanaConnectionManager hcm = new HanaConnectionManager();
+            HanaConnection hc = null;
+
+            try
+            {
+                hc = hcm.GetConnection();
+                HanaCommand cmd = new HanaCommand(GetSqlQry(qry, prms), hc);
+                hcm.OpenConnection();
+                HanaDataReader hdr = cmd.ExecuteReader();
+                if (hdr.HasRows) {
+                    DataTable dataTable = new DataTable();
+                    dataTable.Load(hdr);
+                    return dataTable;
+                }
+                return null;
+            }
+            finally {
+                if (hc?.State == System.Data.ConnectionState.Open)
+                    hcm.CloseConnection();
+            } 
         }
 
         public string insertValueSql(string qry, params object[] prms)

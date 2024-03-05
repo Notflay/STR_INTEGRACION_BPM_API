@@ -1,4 +1,5 @@
-﻿using STR_INTEGRACION_BPM_API.EL;
+﻿using Newtonsoft.Json.Linq;
+using STR_INTEGRACION_BPM_API.EL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace STR_INTEGRACION_BPM_API.BL
 {
     public class Global
     {
-        public static ConsultationResponse<T> ReturnError<T>(Exception ex)
+        
+        public static ConsultationResponse ReturnError(Exception ex)
         {
-            return new ConsultationResponse<T>
+            return new ConsultationResponse
             {
                 CodRespuesta = "99",
                 DescRespuesta = ex.Message,
@@ -19,14 +21,14 @@ namespace STR_INTEGRACION_BPM_API.BL
             };
         }
 
-        public static ConsultationResponse<T> ReturnOk<T>(List<T> list, string respIncorrect)
+        public static ConsultationResponse ReturnOk(JToken data)
         {
             string respOk = "OK";
-            return new ConsultationResponse<T>
+            return new ConsultationResponse
             {
-                CodRespuesta = list.Count() > 0 ? "00" : "22",
-                DescRespuesta = list.Count() > 0 ? respOk : respIncorrect,
-                Result = list
+                CodRespuesta = data != null ? "00" : "22",
+                DescRespuesta = data != null ? respOk : "No se encontró información",
+                Result = data
             };
         }
     }

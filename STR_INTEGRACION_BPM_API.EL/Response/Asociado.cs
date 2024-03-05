@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace STR_INTEGRACION_BPM_API.EL
         public string paterno { get; set; }
         public string materno { get; set; }
         public string tipoFamiliar { get; set; }
-        public string tipoPostulante { get; set; }  
+        public string tipoPostulante { get; set; }
         public string fechaNacimiento { get; set; }
         public string fechaFallecimiento { get; set; }
         public string sexo { get; set; }
@@ -32,7 +33,7 @@ namespace STR_INTEGRACION_BPM_API.EL
         public string categoria { get; set; }
         public string fechaIngreso { get; set; }
         public string fechaInicioCarnet { get; set; }
-        public string fechaFinCarnet { get; set; }  
+        public string fechaFinCarnet { get; set; }
         public string fechaEmisionCarnet { get; set; }
         public string direcciónFiscal { get; set; }
         public string codigoPostalFiscal { get; set; }
@@ -58,7 +59,7 @@ namespace STR_INTEGRACION_BPM_API.EL
         public string codigoPostalLaboral { get; set; }
         public string distritoLaboral { get; set; }
         public string carnetReferencia { get; set; }
-        public string contacto { get; set; }
+        public JToken contacto { get; set; }
         public string comentario { get; set; }
         public string avatar { get; set; }
         public string activo { get; set; }

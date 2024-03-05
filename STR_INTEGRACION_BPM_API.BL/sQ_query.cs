@@ -10,6 +10,6 @@ namespace STR_INTEGRACION_BPM_API.BL
     {
 
         public static readonly string get_Asociado = "ConsultarAsociado";
-
+        public static readonly string get_Contactos = "ConsultarContactos";
     }
 }

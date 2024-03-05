@@ -12,6 +12,7 @@ namespace STR_INTEGRACION_BPM_API
     [RoutePrefix("api/asociado")]
     public class AsociadoController : ApiController
     {
+        /*
         [Route]
         [HttpGet]
         public IHttpActionResult Get(string filtro, string id)
@@ -20,6 +21,17 @@ namespace STR_INTEGRACION_BPM_API
            var response = sQ_Asociado.ObtenerAsociado(filtro, id);
 
            return Ok(response);
+        }
+        */
+
+        [Route]
+        [HttpGet]
+        public IHttpActionResult Get(string id)
+        {
+            sQ_Asociado sQ_Asociado = new sQ_Asociado();
+            var response = sQ_Asociado.ObtenerAsociado(id);
+
+            return Ok(response);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace STR_INTEGRACION_BPM_API
 {
     public class MembresiaController : ApiController
     {
+        /*
         [Route]
         [HttpGet]
         public IHttpActionResult Get(string filtro, string id)
@@ -25,5 +26,6 @@ namespace STR_INTEGRACION_BPM_API
                 return BadRequest(ex.Message.ToString());
             }
         }
+        */
     }
 }

@@ -132,15 +132,70 @@ namespace STR_INTEGRACION_BPM_API.BL
             }
         }
 
-        public JToken ObtenerContactos(string id)
+        public List<Contacto> ObtenerContactos(string id)
         {
+            List<Contacto> list = new List<Contacto>();
+
             try
             {
-                DataTable result = hash.GetDataTableQry(sQ_QueryManager.Generar(sQ_query.get_Contactos), id);
-
-                JToken data = JToken.FromObject(result);
-
-                return data;
+               list = hash.GetResultAsType<Contacto>(sQ_QueryManager.Generar(sQ_query.get_Contactos), dc =>
+               {
+                   return new Contacto
+                   {
+                       CntctCode = Convert.ToInt32(dc["CntctCode"]),
+                       CardCode = dc["CardCode"],
+                       Name = dc["Name"],
+                       Position = dc["Position"],
+                       Address = dc["Address"],
+                       Tel1 = dc["Tel1"],
+                       Tel2 = dc["Tel2"],
+                       Cellolar = dc["Cellolar"],
+                       Fax = dc["Fax"],
+                       E_MailL = dc["E_MailL"],
+                       Pager = dc["Pager"],
+                       Notes1 = dc["Notes1"],
+                       Notes2 = dc["Notes2"],
+                       DataSource = dc["DataSource"],
+                       UserSign = Convert.ToInt32(dc["UserSign"]),
+                       Password = dc["Password"],
+                       LogInstanc = Convert.ToInt32(dc["LogInstanc"]),
+                       ObjType = dc["ObjType"],
+                       BirthPlace = dc["BirthPlace"],
+                       BirthDate = dc["BirthDate"],
+                       Gender = dc["Gender"],
+                       Profession = dc["Profession"],
+                       updateDate = dc["updateDate"],
+                       updateTime = dc["updateTime"],
+                       Title = dc["Title"],
+                       BirthCity = dc["BirthCity"],
+                       Active = dc["Active"],
+                       FirstName = dc["FirstName"],
+                       MiddleName = dc["MiddleName"],
+                       LastName = dc["LastName"],
+                       BirthState = dc["BirthState"],
+                       ResidCity = dc["ResidCity"],
+                       ResidCntry = dc["ResidCntry"],
+                       ResidState = dc["ResidState"],
+                       NFeRcpn = dc["NFeRcpn"],
+                       EmlGrpCode = dc["EmlGrpCode"],
+                       BlockComm = dc["BlockComm"],
+                       FiscalCode = dc["FiscalCode"],
+                       CtyPrvsYr = dc["CtyPrvsYr"],
+                       SttPrvsYr = dc["SttPrvsYr"],
+                       CtyCdPrvsY = dc["CtyCdPrvsY"],
+                       CtyCurYr = dc["CtyCurYr"],
+                       SttCurYr = dc["SttCurYr"],
+                       CtyCdCurYr = dc["CtyCdCurYr"],
+                       NotResdSch = dc["NotResdSch"],
+                       CtyFsnCode = dc["CtyFsnCode"],
+                       NaturalPer = dc["NaturalPer"],
+                       DPPStatus = dc["DPPStatus"],
+                       CreateDate = dc["CreateDate"],
+                       CreateTS = Convert.ToInt32(dc["CreateTS"]),
+                       U_AvalSN = dc["U_AvalSN"],
+                   };
+               },id).ToList();
+                return list;
             }
             catch (Exception)
             {

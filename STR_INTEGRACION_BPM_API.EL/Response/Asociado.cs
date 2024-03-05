@@ -59,7 +59,7 @@ namespace STR_INTEGRACION_BPM_API.EL
         public string codigoPostalLaboral { get; set; }
         public string distritoLaboral { get; set; }
         public string carnetReferencia { get; set; }
-        public JToken contacto { get; set; }
+        public List<Contacto> contacto { get; set; }
         public string comentario { get; set; }
         public string avatar { get; set; }
         public string activo { get; set; }

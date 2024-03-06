@@ -12,4 +12,7 @@
 	<query nameid="ConsultarContactos" definition="I">
 		<hana>SELECT * FROM OCPR  WHERE "CardCode" = '{0}'</hana>
 	</query>
+	<query nameid="ObtenerLineDireccion" definition="I">
+		<hana>SELECT "LineNum" FROM CRD1 WHERE "CardCode" = '{0}' AND "Address" = '{1}'</hana>
+	</query>
 </root>

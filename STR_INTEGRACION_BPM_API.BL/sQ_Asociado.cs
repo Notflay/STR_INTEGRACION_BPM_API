@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using STR_INTEGRACION_BPM_API.EL;
+using STR_INTEGRACION_BPM_API.SL;
 using System.Data;
 using System.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
+using System.Text.Json;
 
 namespace STR_INTEGRACION_BPM_API.BL
 {
@@ -59,9 +61,9 @@ namespace STR_INTEGRACION_BPM_API.BL
         {
             try
             {
-                List<Asociado> result = hash.GetResultAsType<Asociado>(sQ_QueryManager.Generar(sQ_query.get_Asociado), dc =>
+                List<Membresia> result = hash.GetResultAsType<Membresia>(sQ_QueryManager.Generar(sQ_query.get_Asociado), dc =>
                 {
-                    return new Asociado()
+                    return new Membresia()
                     {
                         carnet = dc["carnet"],
                         secuencia = Convert.ToInt32(dc["secuencia"]),
@@ -89,7 +91,7 @@ namespace STR_INTEGRACION_BPM_API.BL
                         fechaInicioCarnet = dc["fechaInicioCarnet"],
                         fechaFinCarnet = dc["fechaFinCarnet"],
                         fechaEmisionCarnet = dc["fechaEmisionCarnet"],
-                        direcciónFiscal = dc["direcciónFiscal"],
+                        direccionFiscal = dc["direcciónFiscal"],
                         codigoPostalFiscal = dc["codigoPostalFiscal"],
                         distritoFiscal = dc["distritoFiscal"],
                         provinciaFiscal = dc["provinciaFiscal"],
@@ -114,10 +116,10 @@ namespace STR_INTEGRACION_BPM_API.BL
                         distritoLaboral = dc["distritoLaboral"],
                         carnetReferencia = dc["carnetReferencia"],
                         comentario = dc["comentario"],
-                        avatar = dc["avatar"],
+                        avatar = dc["avatar"] != null ? $@"{dc["avatar"]}" : null,
                         activo = dc["activo"],
                         estado = dc["estado"],
-                        requiereADD = Convert.ToInt32(dc["fechaProcesoSolicitud"]) == 1,
+                        requiereADD = dc["fechaProcesoSolicitud"],
                         contacto = dc["cardCode"] != null ? ObtenerContactos(dc["cardCode"]) : null
                     };
                 }, id).ToList();
@@ -203,5 +205,115 @@ namespace STR_INTEGRACION_BPM_API.BL
             }
         }
 
+        public ConsultationResponse ActualizarMembresia(List<Membresia> membresias) {
+            try
+            {
+                string json = System.Text.Json.JsonSerializer.Serialize(membresias);
+                string s = "";
+                List<MembresiaUpdate> _membresias = System.Text.Json.JsonSerializer.Deserialize<List<MembresiaUpdate>>(json);
+
+                // Divide entre Asociados Y Familiares  ---- 
+                for (int i = 0; i < _membresias.Count; i++)
+                {
+                    if (_membresias[i].secuencia == 0)
+                    {
+                        ActualizarAsociado(_membresias[i]);
+                    }
+                    else {
+                        ActualizarFamiliar(_membresias[i]);
+                    }
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public void ActualizarAsociado(MembresiaUpdate asociado) 
+        {
+            try
+            {
+                BPAddresses adress1 = null;
+                BPAddresses adress2 = null;
+                // Obtiene las direcciones -- Obtiene Rownum de los que vaa a actualizar
+                asociado.BPAddresses = new List<BPAddresses>();
+                /*
+                if (asociado.direccionFiscal != null | asociado.codigoPostalFiscal != null | asociado.distritoFiscal != null | asociado.provinciaFiscal != null)
+                {
+                    // Obtiene RowNuw de dirección
+                    string rowNum = hash.GetValueSql(sQ_QueryManager.Generar(sQ_query.get_LineDirec), asociado.cardCode, "FISCAL");
+                    adress1 = new BPAddresses()
+                    {
+                        RowNum = Convert.ToInt32(rowNum),
+                        Block = asociado.distritoFiscal,
+                        BPCode = asociado.cardCode,
+                        City = asociado.provinciaFiscal,
+                        Street = asociado.direccionFiscal,
+                        ZipCode = asociado.codigoPostalFiscal,
+                        Country = asociado.paisResidencia,
+                    };
+
+                    asociado.direccionFiscal = null;
+                    asociado.provinciaFiscal = null;
+                    asociado.codigoPostalFiscal = null;
+                    asociado.paisResidencia = null;
+                    asociado.distritoFiscal = null;
+
+                    asociado.BPAddresses.Add(adress1);
+                }*/
+                if (asociado.direccionLaboral != null | asociado.distritoLaboral != null | asociado.codigoPostalLaboral != null)
+                {
+                    string rowNum = hash.GetValueSql(sQ_QueryManager.Generar(sQ_query.get_LineDirec), asociado.cardCode, "LABORAL");
+                    adress2 = new BPAddresses()
+                    {
+                        RowNum = Convert.ToInt32(rowNum),
+                        Block = asociado.distritoLaboral,
+                        BPCode = asociado.cardCode,
+                        //City = asociado.provinciaFiscal,
+                        Street = asociado.direccionLaboral,
+                        ZipCode = asociado.codigoPostalLaboral,
+                    };
+
+                    asociado.direccionLaboral = null;
+                    asociado.distritoLaboral = null;
+                    asociado.codigoPostalLaboral = null;
+
+                    asociado.BPAddresses.Add(adress2);
+                }
+
+                // Una vez obtiene toda las direcciones hace el envio por Service Layer la creación. 
+                var jsonSettings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    Formatting = Newtonsoft.Json.Formatting.Indented
+                };
+
+                //string json = System.Text.Json.JsonSerializer.Serialize(asociado);
+                string json = JsonConvert.SerializeObject(asociado, jsonSettings);
+
+                B1SLEndpoint b1SLEndpoint = new B1SLEndpoint();
+                b1SLEndpoint.Patch($"/BusinessPartners('{asociado.cardCode}')", json);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public void ActualizarFamiliar(MembresiaUpdate familiar)
+        {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }        
+        }
     }
 }

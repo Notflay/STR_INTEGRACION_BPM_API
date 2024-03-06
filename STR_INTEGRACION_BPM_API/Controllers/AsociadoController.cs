@@ -23,15 +23,15 @@ namespace STR_INTEGRACION_BPM_API
            return Ok(response);
         }
         */
-
+        /*
         [Route]
         [HttpGet]
-        public IHttpActionResult Get(string id)
+        public IHttpActionResult Get(string carnet)
         {
             sQ_Asociado sQ_Asociado = new sQ_Asociado();
-            var response = sQ_Asociado.ObtenerAsociado(id);
+            var response = sQ_Asociado.ObtenerAsociado(carnet);
 
             return Ok(response);
-        }
+        }*/
     }
 }

@@ -23,12 +23,19 @@ namespace STR_INTEGRACION_BPM_API.SL
             return objeto;
         }
 
+        public dynamic Patch(string resource, string json)
+        {
+            var rslt = default(RestSharp.IRestResponse);
+            rslt = sLInteract.httpPATCH(getBasePath() + resource, SessionId,json);
+
+            /*
+            var objeto = System.Text.Json.JsonSerializer.Deserialize<T>(rslt.Content);
+            */
+            return null;
+        }
         public override U POST<U>(string strJSON)
         {
             throw new NotImplementedException();
         }
-
-
-
     }
 }

@@ -34,7 +34,14 @@ namespace STR_INTEGRACION_BPM_API.SQ
                         {
                             // Verifica si el valor del campo es DBNull.Value antes de convertirlo a cadena
                             object fieldValue = hdr[i];
-                            dc[hdr.GetName(i)] = fieldValue != DBNull.Value ? fieldValue.ToString() : "";
+                            if (hdr.GetName(i) == "avatar" && fieldValue != DBNull.Value)
+                            {
+                                dc["avatar"] = fieldValue.ToString().Replace(@"\\", @"\");
+                            }
+                            else
+                            {
+                                dc[hdr.GetName(i)] = fieldValue != DBNull.Value ? fieldValue.ToString() : "";
+                           }
                         }
                         catch (Exception)
                         {

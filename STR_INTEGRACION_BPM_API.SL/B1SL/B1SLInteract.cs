@@ -51,6 +51,21 @@ namespace STR_INTEGRACION_BPM_API.SL
             catch { throw; }
         }
 
+        public IRestResponse httpPATCH(string uri, string sessionId, string json) 
+        {
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                var client = new RestClient(baseURL);
+                var request = new RestRequest(uri, Method.PATCH);
+                request.AddHeader("content-type", "application/json");
+                request.AddCookie("B1SESSION", sessionId);
+                request.AddCookie("ROUTEID", ".node0");
+                request.AddParameter("application/json", json, ParameterType.RequestBody);
+                return client.Execute(request);
+            }
+            catch { throw; }
+        }
         public IRestResponse httpGET(string uri, string sessionId)          // Traer OCRD
         {
             try

@@ -22,6 +22,6 @@
 		<hana>SELECT "Descr" AS "Descripcion" FROM "UFD1" WHERE "TableID" = 'OCRD' and "FieldID" = '{0}' and "FldValue" = '{1}'</hana>
 	</query>
 	<query nameid="ObtieneDescripcionDeTabla" definition="I">
-		<hana>SELECT "Name" FROM {0} WHERE "Code" = '{0}'</hana>
+		<hana>SELECT "Name" FROM {0} WHERE "Code" = '{1}'</hana>
 	</query>
 </root>

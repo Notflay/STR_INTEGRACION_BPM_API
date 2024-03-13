@@ -12,5 +12,8 @@ namespace STR_INTEGRACION_BPM_API.BL
         public static readonly string get_Asociado = "ConsultarAsociado";
         public static readonly string get_Contactos = "ConsultarContactos";
         public static readonly string get_LineDirec = "ObtenerLineDireccion";
+        public static readonly string get_MesVigencia = "ObtenerMesVigencia";
+        public static readonly string get_CampoDescripcion = "ObtenerDescripcionCampo";
+        public static readonly string get_DescripcionDeTabla = "ObtieneDescripcionDeTabla";
     }
 }

@@ -57,10 +57,34 @@ namespace STR_INTEGRACION_BPM_API.BL
             }
         }
 
+        public string ObtenerDescripcionCampo(string campoId, string campoValor)
+        {
+            try
+            {
+                string valor = "";
+
+                valor = hash.GetValueSql(sQ_QueryManager.Generar(sQ_query.get_CampoDescripcion), campoId, campoValor);
+
+                return valor;
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public ConsultationResponse ObtenerAsociado(string id)
         {
             try
             {
+
+                // Obtiene Mes de Vigencia
+
+                string mesVigencia = hash.GetValueSql(sQ_QueryManager.Generar(sQ_query.get_MesVigencia));
+
+                //int ? mesVigencia = string.IsNullOrEmpty() ? null : 1); ;
+
                 List<Membresia> result = hash.GetResultAsType<Membresia>(sQ_QueryManager.Generar(sQ_query.get_Asociado), dc =>
                 {
                     return new Membresia()
@@ -70,6 +94,7 @@ namespace STR_INTEGRACION_BPM_API.BL
                         cardCode = dc["cardCode"],
                         role = dc["role"],
                         tipoDocumento = dc["tipoDocumento"],
+                        tipoDocumentoDesc = string.IsNullOrEmpty(dc["tipoDocumento"]) ? null : ObtenerDescripcionCampo("3", dc["tipoDocumento"]),
                         documento = dc["documento"],
                         ruc = dc["ruc"],
                         razonSocial = dc["razonSocial"],
@@ -79,14 +104,20 @@ namespace STR_INTEGRACION_BPM_API.BL
                         paterno = dc["paterno"],
                         materno = dc["materno"],
                         tipoFamiliar = dc["tipoFamiliar"],
+                        tipoFamiliarDesc = string.IsNullOrEmpty(dc["tipoFamiliar"]) ? null : hash.GetValueSql(sQ_QueryManager.Generar(sQ_query.get_DescripcionDeTabla), "\"@ST_TIPO_FAMILIAR\"" ,dc["tipoFamiliar"]),
                         tipoPostulante = dc["tipoPostulante"],
+                        tipoPostulanteDesc  = string.IsNullOrEmpty(dc["tipoPostulante"]) ? null : hash.GetValueSql(sQ_QueryManager.Generar(sQ_query.get_DescripcionDeTabla), "\"@ST_TIPO_POST\"", dc["tipoPostulante"]),
                         fechaNacimiento = dc["fechaNacimiento"],
                         fechaFallecimiento = dc["fechaFallecimiento"],
                         sexo = dc["sexo"],
+                        sexoDesc = string.IsNullOrEmpty(dc["sexo"]) ? null : ObtenerDescripcionCampo("42", dc["sexo"]),
                         estadoCivil = dc["estadoCivil"],
+                        estadoCivilDesc = string.IsNullOrEmpty(dc["estadoCivil"]) ? null : ObtenerDescripcionCampo("43", dc["estadoCivil"]),
                         tipoSangre = dc["tipoSangre"],
                         condicion = dc["condicion"],
+                        condicionDesc = string.IsNullOrEmpty(dc["condicion"]) ? null : ObtenerDescripcionCampo("71", dc["condicion"]),
                         categoria = dc["categoria"],
+                        categoriaDesc = string.IsNullOrEmpty(dc["categoria"]) ? null : hash.GetValueSql(sQ_QueryManager.Generar(sQ_query.get_DescripcionDeTabla), "\"@ST_CAT_ASOCIADOS\"", dc["categoria"]),
                         fechaIngreso = dc["fechaIngreso"],
                         fechaInicioCarnet = dc["fechaInicioCarnet"],
                         fechaFinCarnet = dc["fechaFinCarnet"],
@@ -118,9 +149,11 @@ namespace STR_INTEGRACION_BPM_API.BL
                         comentario = dc["comentario"],
                         avatar = dc["avatar"] != null ? $@"{dc["avatar"]}" : null,
                         activo = dc["activo"],
-                        estado = dc["estado"],
+                        estado = dc["estado"], 
+                        contacto = dc["cardCode"] != null ? ObtenerContactos(dc["cardCode"]) : null,
+                        // Mes de Vigencia de la Solicitud
                         requiereADD = dc["fechaProcesoSolicitud"],
-                        contacto = dc["cardCode"] != null ? ObtenerContactos(dc["cardCode"]) : null
+                        mesVigencia = string.IsNullOrWhiteSpace(Convert.ToString(dc["mesVigencia"])) ? (int?)null : Convert.ToInt32(dc["mesVigencia"])                      
                     };
                 }, id).ToList();
 
@@ -210,7 +243,7 @@ namespace STR_INTEGRACION_BPM_API.BL
             {
                 string json = System.Text.Json.JsonSerializer.Serialize(membresias);
                 string s = "";
-                List<MembresiaUpdate> _membresias = System.Text.Json.JsonSerializer.Deserialize<List<MembresiaUpdate>>(json);
+                List<MembresiaAsociado> _membresias = System.Text.Json.JsonSerializer.Deserialize<List<MembresiaAsociado>>(json);
 
                 // Divide entre Asociados Y Familiares  ---- 
                 for (int i = 0; i < _membresias.Count; i++)
@@ -231,7 +264,7 @@ namespace STR_INTEGRACION_BPM_API.BL
                 throw;
             }
         }
-        public void ActualizarAsociado(MembresiaUpdate asociado) 
+        public void ActualizarAsociado(MembresiaAsociado asociado) 
         {
             try
             {
@@ -303,7 +336,7 @@ namespace STR_INTEGRACION_BPM_API.BL
                 throw;
             }
         }
-        public void ActualizarFamiliar(MembresiaUpdate familiar)
+        public void ActualizarFamiliar(MembresiaAsociado familiar)
         {
             try
             {

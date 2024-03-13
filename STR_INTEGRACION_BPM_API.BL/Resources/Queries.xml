@@ -15,4 +15,13 @@
 	<query nameid="ObtenerLineDireccion" definition="I">
 		<hana>SELECT "LineNum" FROM CRD1 WHERE "CardCode" = '{0}' AND "Address" = '{1}'</hana>
 	</query>
+	<query nameid="ObtenerMesVigencia" definition="I">
+		<hana>SELECT "U_STR_VIGENCIA" FROM "@STR_BPM_CONF" WHERE Code = '1'</hana>
+	</query>
+	<query nameid="ObtenerDescripcionCampo" definition="I">
+		<hana>SELECT "Descr" AS "Descripcion" FROM "UFD1" WHERE "TableID" = 'OCRD' and "FieldID" = '{0}' and "FldValue" = '{1}'</hana>
+	</query>
+	<query nameid="ObtieneDescripcionDeTabla" definition="I">
+		<hana>SELECT "Name" FROM {0} WHERE "Code" = '{0}'</hana>
+	</query>
 </root>

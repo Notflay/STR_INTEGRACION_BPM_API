@@ -15,6 +15,7 @@ namespace STR_INTEGRACION_BPM_API.EL
         public string cardCode { get; set; }
         public string role { get; set; }
         public string tipoDocumento { get; set; }
+        public string tipoDocumentoDesc { get; set; }
         public string documento { get; set; }
         public string ruc { get; set; }
         public string razonSocial { get; set; }
@@ -24,14 +25,20 @@ namespace STR_INTEGRACION_BPM_API.EL
         public string paterno { get; set; }
         public string materno { get; set; }
         public string tipoFamiliar { get; set; }
+        public string tipoFamiliarDesc { get; set; }
         public string tipoPostulante { get; set; }
+        public string tipoPostulanteDesc { get; set; }
         public string fechaNacimiento { get; set; }
         public string fechaFallecimiento { get; set; }
         public string sexo { get; set; }
+        public string sexoDesc { get; set; }
         public string estadoCivil { get; set; }
+        public string estadoCivilDesc { get; set; }
         public string tipoSangre { get; set; }
         public string condicion { get; set; }
+        public string condicionDesc { get; set; }
         public string categoria { get; set; }
+        public string categoriaDesc { get; set; }
         public string fechaIngreso { get; set; }
         public string fechaInicioCarnet { get; set; }
         public string fechaFinCarnet { get; set; }
@@ -66,9 +73,11 @@ namespace STR_INTEGRACION_BPM_API.EL
         public string activo { get; set; }
         public string estado { get; set; }
         public string requiereADD { get; set; }
+        // Vigencia de Procesamiento
+        public int? mesVigencia { get; set; }
     }
 
-    public class MembresiaUpdate
+    public class MembresiaAsociado
     {
         [JsonIgnore]
         public string carnet { get; set; }
@@ -185,6 +194,9 @@ namespace STR_INTEGRACION_BPM_API.EL
         public string requiereADD { get; set; }
     }
 
+    public class MemebresiaFamiliar { 
+    
+    }
     public class BPAddresses { 
         public int RowNum { get; set; }
         public string Street { get; set; }
